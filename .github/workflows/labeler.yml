@@ -1,0 +1,31 @@
+name: Issue Labeler
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const title = context.payload.issue.title.toLowerCase();
+            let labels = [];
+
+            if(title.includes("bug") || title.includes("error") || title.includes("crash") || title.includes("broken")) labels.push("bug");
+            if(title.includes("feature") || title.includes("enhancement") || title.includes("improve")) labels.push("enhancement");
+            if(title.includes("good first issue") || title.includes("beginner") || title.includes("easy")) labels.push("good first issue");
+            if(title.includes("docs") || title.includes("documentation") || title.includes("readme")) labels.push("documentation");
+            if(title.includes("question") || title.includes("how to") || title.includes("help")) labels.push("question");
+
+            if(labels.length > 0){
+              github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels
+              });
+            }

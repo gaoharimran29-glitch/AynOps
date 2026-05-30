@@ -1,0 +1,27 @@
+name: PR Size Labeler
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const lines = pr.additions + pr.deletions;
+            let label = "";
+
+            if (lines < 50) label = "size: small";
+            else if (lines < 200) label = "size: medium";
+            else label = "size: large";
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              labels: [label]
+            });
