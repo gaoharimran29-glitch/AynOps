@@ -1,26 +1,39 @@
-# 🔐 CyberSecurity MCP Server
+<div align="center">
+    <picture>
+      <img alt="LangChain Logo" src=".github/images/logo.svg" width="90%">
+    </picture>
+</div>
 
-[![Cybersecurity-MCP-Server MCP server](https://glama.ai/mcp/servers/gaoharimran29-glitch/Cybersecurity-MCP-Server/badges/score.svg)](https://glama.ai/mcp/servers/gaoharimran29-glitch/Cybersecurity-MCP-Server)
+<div align="center">
+<h3>
+A Model Context Protocol (MCP) server that gives Claude real-time cybersecurity reconnaissance capabilities. Instead of manually running tools across different terminals, just tell Claude "analyze google.com" and get a complete security breakdown instantly.
+  </h3>
+</div>
 
-[![Cybersecurity-MCP-Server MCP server](https://glama.ai/mcp/servers/gaoharimran29-glitch/Cybersecurity-MCP-Server/badges/card.svg)](https://glama.ai/mcp/servers/gaoharimran29-glitch/Cybersecurity-MCP-Server)
-
-A **Model Context Protocol (MCP) server** that gives Claude real-time cybersecurity reconnaissance capabilities. Instead of manually running tools across different terminals, just tell Claude **"analyze google.com"** and get a complete security breakdown instantly.
-
-Built with [FastMCP](https://github.com/jlowin/fastmcp) and Python.
+<div align="center">
+  <a href="https://opensource.org/licenses/MIT" target="_blank"> <img src="https://img.shields.io/badge/license-MIT-green.svg" /></a>
+  <a href="https://github.com/gaoharimran29-glitch/AynOps" target="_blank"> <img src="https://img.shields.io/github/stars/gaoharimran29-glitch/AynOps?style=social" /></a>
+  <a href="https://github.com/gaoharimran29-glitch/AynOps/network/members" target="_blank"><img src="https://img.shields.io/github/forks/gaoharimran29-glitch/AynOps?style=social" /></a>
+  <a href="https://pypi.org/project/AynOps/" target="_blank"><img src="https://img.shields.io/pypi/v/Cybersecurity-MCP-Server?label=version" /></a>
+  <a href="https://github.com/gaoharimran29-glitch/AynOps/issues" target="_blank"><img src="https://img.shields.io/github/issues/gaoharimran29-glitch/AynOps" /></a>
+  <a href="https://glama.ai/mcp/servers/gaoharimran29-glitch/Cybersecurity-MCP-Server">
+  <img src="https://glama.ai/mcp/servers/gaoharimran29-glitch/Cybersecurity-MCP-Server/badges/score.svg" /></a>
+</div>
 
 ---
 
-## 🎯 What is this?
+## What is this?
 
 Claude by default has **zero native cybersecurity tooling**. No WHOIS. No DNS enumeration. No port scanning. No SSL inspection.
 
 This MCP server fixes that — extending Claude with **real-world security tools** that run live against any domain or IP. Reconnaissance that normally requires multiple specialized tools and 20+ minutes of manual work becomes a single prompt.
 
 This is a **local MCP server** — it runs entirely on your machine. Your data never leaves your computer.
+It is also listed on glama mcp registry.
 
 ---
 
-## 🛠️ Tools Available
+## Tools Available
 
 | Tool | Description |
 |---|---|
@@ -31,7 +44,7 @@ This is a **local MCP server** — it runs entirely on your machine. Your data n
 | `tech_stack_detect` | Web server, CMS, JS frameworks, CDN, analytics, and security header scoring |
 | `cve_lookup` | Search NVD for known CVEs by software name and version (no API key required) |
 | `ip_reputation` | Check if an IP is flagged as malicious via AbuseIPDB (api key requied) |
-| `full_recon` | Runs all 5 core tools in parallel and returns combined results for Claude to analyze |
+| `full_recon` | Runs all 6 core tools in parallel and returns combined results for Claude to analyze |
 | `asn_lookup` | Autonomous System Number (ASN) and network ownership lookup — identifies hosting provider, ISP, organization, geolocation, and infrastructure ownership for domains or IP addresses |
 ---
 
@@ -46,19 +59,36 @@ Claude: Found 2 critical CVEs for Apache 2.4.49:
         allowing remote code execution if CGI is enabled. Actively exploited
         in the wild...
 ```
+<div align="center">
+    <picture>
+      <img alt="CVE Lookup tool" src=".github/images/single_tool.png" width="100%" , height="70%">
+    </picture>
+</div>
 
 ### Full recon
 ```
 You: Do a complete security recon on reddit.com
 
-Claude: [calls full_recon → runs 5 tools in parallel → delivers full analysis]
+Claude: [calls full_recon → runs 6 tools in parallel → delivers full analysis]
 ```
+
+<div align="center">
+    <picture>
+      <img alt="Full recon tool" src=".github/images/full_recon1.png" width="100%" height="70%">
+    </picture>
+</div>
+
+<div align="center">
+    <picture>
+      <img alt="Full recon tool" src=".github/images/full_recon2.png" width="100%" height="70%">
+    </picture>
+</div>
 
 ---
 
 ## 📋 Prerequisites
 
-- **Python 3.10+** — [download](https://www.python.org/downloads/)
+- **Python 3.12+** — [download](https://www.python.org/downloads/)
 - **Claude Desktop** — [download](https://claude.ai/download)
 - **Nmap** — required for port scanning ([download](https://nmap.org/download.html))
 - **Git** — [download](https://git-scm.com/)
@@ -70,31 +100,17 @@ Claude: [calls full_recon → runs 5 tools in parallel → delivers full analysi
 ### Step 1 — Clone the repository
 
 ```bash
-git clone https://github.com/gaoharimran29-glitch/Cybersecurity-MCP-Server.git
-cd Cybersecurity-MCP-Server
+git clone https://github.com/gaoharimran29-glitch/AynOps
+cd AynOps
 ```
 
-### Step 2 — Create a virtual environment
-
-**Windows:**
-```powershell
-python -m venv .venv
-.venv\Scripts\activate
-```
-
-**Mac/Linux:**
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-### Step 3 — Install Python dependencies
+### Step 2 — Install Python dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 4 — Install Nmap
+### Step 3 — Install Nmap
 
 **Windows:**
 1. Download from [nmap.org/download.html](https://nmap.org/download.html) and run the installer
@@ -118,7 +134,7 @@ brew install nmap
 sudo apt install nmap
 ```
 
-### Step 5 — Connect to Claude Desktop
+### Step 4 — Connect to Claude Desktop
 
 Open your Claude Desktop config file:
 
@@ -135,8 +151,8 @@ Add this configuration:
 {
   "mcpServers": {
     "cybersecurity": {
-      "command": "C:\\full\\path\\to\\Cybersecurity-MCP-Server\\.venv\\Scripts\\python.exe",
-      "args": ["C:\\full\\path\\to\\Cybersecurity-MCP-Server\\main.py"],
+      "command": "C:\\full\\path\\to\\AynOps\\.venv\\Scripts\\python.exe",
+      "args": ["C:\\full\\path\\to\\AynOps\\main.py"],
       "env": {
         "ABUSEIPDB_API_KEY": "your-api-key-here",
         "IP_API_KEY": "your-api-key-here"
@@ -151,8 +167,8 @@ Add this configuration:
 {
   "mcpServers": {
     "cybersecurity": {
-      "command": "/full/path/to/Cybersecurity-MCP-Server/.venv/bin/python3",
-      "args": ["/full/path/to/Cybersecurity-MCP-Server/main.py"],
+      "command": "/full/path/to/AynOps/.venv/bin/python3",
+      "args": ["/full/path/to/AynOps/main.py"],
       "env": {
         "ABUSEIPDB_API_KEY": "your-api-key-here",
         "IP_API_KEY": "your-api-key-here"
@@ -166,9 +182,9 @@ Add this configuration:
 
 > **Note:** `ABUSEIPDB_API_KEY` is only required for the `ip_reputation` tool. Get a free key at [abuseipdb.com](https://www.abuseipdb.com) (free tier: 1,000 requests/day). `IP_API_KEY` is only required for the `asn_lookup` tool. get a free key at [ipapi.com](https://ipapi.com/)
 
-### Step 6 — Restart Claude Desktop
+### Step 5 — Restart Claude Desktop
 
-Fully quit and reopen Claude Desktop — closing the window is not enough. Check the system tray and quit from there.
+Fully quit and reopen Claude Desktop — closing the window is not enough. Check the system task manager and quit from there.
 
 Verify tools are connected by asking Claude:
 ```
@@ -215,7 +231,7 @@ Scan scanme.nmap.org with service detection
 Do a complete security recon on reddit.com
 ```
 
-Claude will run all 5 core tools in parallel and deliver a full security analysis.
+Claude will run all 6 core tools in parallel and deliver a full security analysis.
 
 ### Follow-up analysis
 
@@ -225,19 +241,6 @@ What do the open ports mean from an attacker's perspective?
 Is this SSL configuration strong enough for a financial services company?
 Cross-reference the open ports with known CVEs for the detected services.
 ```
----
-Expected output:
-```
-...
-----------------------------------------------------------------------
-Ran tests in 0.001s
-
-OK
-```
-
-Tests mock external APIs so no internet connection or API keys are required.
-
----
 
 ## ⚠️ Legal & Ethical Usage
 
@@ -258,28 +261,28 @@ Intended for:
 
 ## 🗂️ Project Structure
 
+```text
+├── .github/            # GitHub workflows, templates and assets
+├── main.py             # MCP server entry point
+├── pyproject.toml      # Project configuration
+├── requirements.txt    # Dependencies
+├── glama.json          # Glama MCP metadata
+├── Dockerfile          # Container image
+├── SECURITY.md         # Security policy
+├── contributing.md     # Contribution guidelines
+└── README.md           # README File
 ```
-Cybersecurity-MCP-Server/
-├── main.py                  # MCP server
-├──.env.example              # For API testing
-├── requirements.txt         # Python dependencies
-├── Dockerfile               # For deployment
-├── contributing.md          # Contribution guide
-└── README.md                # This file
-```
-
 ---
 
-## 🔭 Roadmap
+## Glama MCP Scoring
 
-- [ ] Shodan integration — internet-wide device and service search
-- [ ] Certificate transparency search — find subdomains via cert logs
-- [ ] HTTP security headers deep analyzer
-- [ ] Phishing domain detector
-- [ ] Multi-domain batch scanning
-- [ ] PDF report generation
+<div align="left">
 
----
+<a href="https://glama.ai/mcp/servers/gaoharimran29-glitch/Cybersecurity-MCP-Server">
+  <img src="https://glama.ai/mcp/servers/gaoharimran29-glitch/Cybersecurity-MCP-Server/badges/card.svg" />
+</a>
+
+</div>
 
 ## 🤝 Contributing
 

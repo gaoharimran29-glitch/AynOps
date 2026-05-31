@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<svg width="680" height="220" viewBox="0 0 680 220" role="img" xmlns="http://www.w3.org/2000/svg">
+
+  <title>AynOps — Open source MCP Server for reconnaissance</title>
+
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#c97c30" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/>
+    </radialGradient>
+
+    <pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="0.8" fill="#ffffff" fill-opacity="0.03"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="680" height="220" rx="12" fill="#0d0d0d"/>
+  <rect width="680" height="220" rx="12" fill="url(#dots)"/>
+  <rect width="680" height="220" rx="12" fill="url(#glow)"/>
+
+  <!-- subtle top line -->
+  <rect x="0" y="0" width="680" height="1" fill="#c97c30" fill-opacity="0.35"/>
+
+  <!-- left circuit -->
+  <g stroke="#c97c30" stroke-opacity="0.14" stroke-width="1" fill="none">
+    <polyline points="20,200 20,175 45,175"/>
+    <polyline points="45,175 45,165 70,165"/>
+    <circle cx="45" cy="175" r="2.3" fill="#c97c30" fill-opacity="0.2"/>
+    <circle cx="70" cy="165" r="2.3" fill="#c97c30" fill-opacity="0.2"/>
+  </g>
+
+  <!-- logo -->
+  <circle cx="292" cy="78" r="18" fill="#ffffff"/>
+  <circle cx="295" cy="78" r="8" fill="#0d0d0d"/>
+  <circle cx="298" cy="75" r="2.5" fill="#ffffff"/>
+
+  <circle cx="328" cy="78" r="18" fill="#ffffff"/>
+  <circle cx="325" cy="78" r="9" fill="#0d0d0d"/>
+  <circle cx="322" cy="75" r="3" fill="#ffffff"/>
+
+  <!-- Brand (more natural weight) -->
+  <text x="356" y="86"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="26"
+        font-weight="600"
+        fill="#ffffff">
+    Ayn<tspan fill="#c97c30">Ops</tspan>
+  </text>
+
+  <!-- divider (slightly off-perfect feel) -->
+  <line x1="242" y1="108" x2="438" y2="108"
+        stroke="#ffffff" stroke-opacity="0.08" stroke-width="0.5"/>
+
+  <!-- Tagline (more human phrasing) -->
+  <text x="338" y="140"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="16"
+        fill="#d8d8d8"
+        text-anchor="middle">
+        Open-source MCP server for recon &amp; security tooling
+  </text>
+
+  <!-- BADGE 1 -->
+  <rect x="150" y="158" width="145" height="26" rx="6"
+        fill="#1a1a1a" stroke="#c97c30" stroke-opacity="0.6"/>
+
+  <circle cx="165" cy="171" r="3.2" fill="#c97c30"/>
+
+  <text x="223" y="171"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        fill="#c97c30">
+    Recon Tools
+  </text>
+
+  <!-- BADGE 2 -->
+  <rect x="300" y="158" width="145" height="26" rx="6"
+        fill="#1a1a1a" stroke="#888" stroke-opacity="0.4"/>
+
+  <circle cx="315" cy="171" r="3.2" fill="#aaa"/>
+
+  <text x="373" y="171"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        fill="#bbbbbb">
+    MCP Protocol
+  </text>
+
+  <!-- BADGE 3 -->
+  <rect x="450" y="158" width="145" height="26" rx="6"
+        fill="#1a1a1a" stroke="#5a9e6f" stroke-opacity="0.6"/>
+
+  <circle cx="465" cy="171" r="3.2" fill="#5a9e6f"/>
+
+  <text x="523" y="171"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        fill="#5a9e6f">
+    Open Source
+  </text>
+
+</svg>

@@ -16,7 +16,7 @@
 If you discover a security vulnerability in this project, please report it responsibly by contacting me directly:
 
 - **LinkedIn:** [Gaohar Imran](https://www.linkedin.com/in/gaohar-imran-5a4063379/)
-- **GitHub:** Open a [private security advisory](https://github.com/gaoharimran29-glitch/Cybersecurity-MCP-Server/security/advisories/new)
+- **GitHub:** Open a [private security advisory](https://github.com/gaoharimran29-glitch/AynOps/security/advisories/new)
 
 Please include:
 - A description of the vulnerability

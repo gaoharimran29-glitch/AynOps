@@ -1,4 +1,4 @@
-# Contributing to CyberSecurity MCP Server
+# Contributing to AynOps
 
 Thanks for your interest in contributing! This project is actively growing and new tools are welcome. Every contribution — whether a new tool, bug fix, or documentation improvement — is appreciated.
 
@@ -48,15 +48,7 @@ except ValueError:
 
 ## 💡 Tool Ideas (open for contribution)
 
-Pick one and open a PR:
-
-- [ ] **Shodan Integration** — internet-wide device and service search
-- [ ] **Certificate Transparency** — search cert logs for subdomains via crt.sh
-- [ ] **HTTP Headers Analyzer** — deep analysis of all response headers
-- [ ] **Phishing Detector** — score domains for phishing likelihood
-- [ ] **Reverse DNS Lookup** — resolve IPs back to hostnames
-- [ ] **ASN Lookup** — find Autonomous System Number and org for an IP
-- [ ] **Email Security Check** — validate SPF, DKIM, DMARC records
+Pick one issue and open a PR:
 
 ---
 
