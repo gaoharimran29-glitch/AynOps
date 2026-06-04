@@ -1,0 +1,126 @@
+{
+  "name": "AynOps",
+  "version": "1.1.1",
+  "description": "A Model Context Protocol server that gives Claude real-time cybersecurity reconnaissance capabilities — WHOIS, DNS enumeration, port scanning, SSL inspection, CVE lookup, IP reputation, ASN lookup and more.",
+  "author": "Gaohar Imran",
+  "license": "MIT",
+  "homepage": "https://github.com/gaoharimran29-glitch/AynOps",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gaoharimran29-glitch/AynOps"
+  },
+  "runtime": "python",
+  "runtime_version": ">=3.12",
+  "transport": ["stdio"],
+  "tools": [
+    {
+      "name": "whois_lookup",
+      "description": "Query domain registration data — owner, registrar, creation date, expiry, name servers",
+      "input": {"domain": "string"},
+      "requires_api_key": false
+    },
+    {
+      "name": "dns_enumeration",
+      "description": "Enumerate DNS records and brute-force common subdomains",
+      "input": {"domain": "string"},
+      "requires_api_key": false
+    },
+    {
+      "name": "port_scan",
+      "description": "Nmap-powered port scanner with service and version detection",
+      "input": {"target": "string", "scan_type": "string"},
+      "requires_api_key": false,
+      "requires_system_dependency": "nmap"
+    },
+    {
+      "name": "ssl_inspect",
+      "description": "Inspect SSL/TLS certificate — issuer, expiry, cipher, SANs, TLS version",
+      "input": {"domain": "string", "port": "integer"},
+      "requires_api_key": false
+    },
+    {
+      "name": "tech_stack_detect",
+      "description": "Fingerprint web server, CMS, CDN, JS frameworks, and security headers",
+      "input": {"domain": "string"},
+      "requires_api_key": false
+    },
+    {
+      "name": "cert_transparency",
+      "description": "Subdomain discovery and Certificate Transparency logs with an automatic fallback to HackerTarget passive DNS on timeouts",
+      "input": {"domain": "string"},
+      "requires_api_key": false
+    },
+    {
+      "name": "asn_lookup",
+      "description": "Find ASN, ISP, organization and geolocation for any IP or domain",
+      "input": {"target": "string"},
+      "requires_api_key": true,
+      "api_key_env": "IP_API_KEY",
+      "api_key_url": "https://ipapi.com/"
+    },
+    {
+      "name": "full_recon",
+      "description": "Runs core tools in parallel against a domain and returns combined results",
+      "input": {"domain": "string"},
+      "requires_api_key": false
+    },
+    {
+      "name": "cve_lookup",
+      "description": "Search NVD database for known CVEs by software name and version",
+      "input": {"software": "string", "version": "string"},
+      "requires_api_key": false
+    },
+    {
+      "name": "ip_reputation",
+      "description": "Check if an IP address is flagged as malicious via AbuseIPDB",
+      "input": {"ip_address": "string"},
+      "requires_api_key": true,
+      "api_key_env": "ABUSEIPDB_API_KEY",
+      "api_key_url": "https://www.abuseipdb.com"
+    }
+  ],
+  "environment_variables": [
+    {
+      "name": "ABUSEIPDB_API_KEY",
+      "description": "Required for ip_reputation tool. Get free key at abuseipdb.com",
+      "required": false
+    },
+    {
+      "name": "IP_API_KEY",
+      "description": "Required for asn_lookup tool. Get free key at ipapi.com",
+      "required": false
+    }
+  ],
+  "installation": {
+    "steps": [
+      "git clone https://github.com/gaoharimran29-glitch/AynOps.git",
+      "cd AynOps",
+      "python -m venv .venv",
+      "pip install -r requirements.txt",
+      "Install Nmap from nmap.org/download.html"
+    ]
+  },
+  "claude_desktop_config": {
+  "mcpServers": {
+    "cybersecurity": {
+      "command": "C:\\full\\path\\to\\AynOps\\.venv\\Scripts\\python.exe",
+      "args": ["C:\\full\\path\\to\\AynOps\\server.py"],
+      "env": {
+        "ABUSEIPDB_API_KEY": "your-api-key-here",
+        "IP_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+},
+  "tags": [
+    "cybersecurity",
+    "reconnaissance",
+    "whois",
+    "dns",
+    "nmap",
+    "ssl",
+    "cve",
+    "security"
+  ],
+  "glama_url": "https://glama.ai/mcp/servers/gaoharimran29-glitch/AynOps"
+}

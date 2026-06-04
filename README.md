@@ -19,7 +19,7 @@ A Model Context Protocol (MCP) server that gives Claude real-time cybersecurity 
   <a href="https://glama.ai/mcp/servers/gaoharimran29-glitch/AynOps">
   <img src="https://glama.ai/mcp/servers/gaoharimran29-glitch/AynOps/badges/score.svg" /></a>
 </div>
----
+
 
 ## What is this?
 
@@ -152,7 +152,7 @@ Add this configuration:
   "mcpServers": {
     "cybersecurity": {
       "command": "C:\\full\\path\\to\\AynOps\\.venv\\Scripts\\python.exe",
-      "args": ["C:\\full\\path\\to\\AynOps\\main.py"],
+      "args": ["C:\\full\\path\\to\\AynOps\\server.py"],
       "env": {
         "ABUSEIPDB_API_KEY": "your-api-key-here",
         "IP_API_KEY": "your-api-key-here"
@@ -168,7 +168,7 @@ Add this configuration:
   "mcpServers": {
     "cybersecurity": {
       "command": "/full/path/to/AynOps/.venv/bin/python3",
-      "args": ["/full/path/to/AynOps/main.py"],
+      "args": ["/full/path/to/AynOps/server.py"],
       "env": {
         "ABUSEIPDB_API_KEY": "your-api-key-here",
         "IP_API_KEY": "your-api-key-here"
@@ -180,18 +180,19 @@ Add this configuration:
 
 > ⚠️ Always use the **full absolute path** to your `.venv` Python executable — not just `python` or `python3`. Claude Desktop may use a different Python installation otherwise.
 
-> **Note:** `ABUSEIPDB_API_KEY` is only required for the `ip_reputation` tool. Get a free key at [abuseipdb.com](https://www.abuseipdb.com) (free tier: 1,000 requests/day). `IP_API_KEY` is only required for the `asn_lookup` tool. get a free key at [ipapi.com](https://ipapi.com/)
+> **Note:** `ABUSEIPDB_API_KEY` is only required for the `ip_reputation` tool. Get a free key at [abuseipdb.com](https://www.abuseipdb.com). `IP_API_KEY` is only required for the `asn_lookup` tool. get a free key at [ipapi.com](https://ipapi.com/)
 
 ### Step 5 — Restart Claude Desktop
 
 Fully quit and reopen Claude Desktop — closing the window is not enough. Check the system task manager and quit from there.
 
 Verify tools are connected by asking Claude:
+
 ```
 What cybersecurity tools do you have available?
 ```
 
-Claude should list all 8 tools.
+Claude should list all tools.
 
 ---
 
@@ -269,6 +270,7 @@ Intended for:
 ├── server.py             # MCP server entry point
 ├── pyproject.toml        # Project metadata and dependencies
 ├── requirements.txt      # Python dependencies
+├── mcp.json              # MCP server metadata
 ├── glama.json            # Glama MCP metadata
 ├── Dockerfile            # Docker image definition
 ├── SECURITY.md           # Security policy

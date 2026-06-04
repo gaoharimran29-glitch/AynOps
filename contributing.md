@@ -79,6 +79,7 @@ Run the tests:
 ```bash
 pytest tests/test_my_tool.py -v
 ```
+All tests should pass wihtout any warning or error.
 
 Every new tool must include at least:
 
@@ -104,11 +105,11 @@ Verify that:
 
 ---
 
-### 5. Update Documentation
+### 5. Update Documentation & `mcp.json`
 
 - Add the tool to the tools table in `README.md`
-- Include usage examples or notes where relevant
-- If the tool requires an API key, document how to obtain and configure it in the README
+- Add the relevant info in `mcp.json`
+- If the tool requires an API key, document how to obtain and configure it in the README & mcp.json
 
 ---
 
@@ -142,10 +143,11 @@ Open a pull request and submit the changes
    fastmcp dev inspector server.py
    ```
 5. Add unit test for tool in `tests/`.
-5. Update the tools table in `README.md`
-6. Update `requirements.txt` if you added a new dependency
-7. Update `.env.example` if your tool needs an API key
-8. Open a pull request with a short description
+6. Update the tools table in `README.md`
+7. Update the relevant info in `mcp.json`
+8. Update `requirements.txt` if you added a new dependency
+9. Update `.env.example` if your tool needs an API key
+10. Open a pull request with a short description
 
 ---
 
@@ -158,6 +160,7 @@ Open a pull request and submit the changes
 - [ ] Unit test added in `tests/`.
 - [ ] Dependencies are minimal — reuse existing libraries where possible
 - [ ] Tools table updated in `README.md`
+- [ ] `mcp.json` updated if applicable
 - [ ] `requirements.txt` updated if a new dependency was added
 - [ ] `.env.example` updated if a new API key is required
 
