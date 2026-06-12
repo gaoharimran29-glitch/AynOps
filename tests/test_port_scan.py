@@ -56,11 +56,16 @@ class TestPortScan(unittest.TestCase):
         self.assertIn("Nmap not found", result["error"])
 
     @patch("tools.portscan_tool.nmap.PortScanner")
-    def test_unknown_scan_type_defaults_to_basic(self, mock_cls):
-        mock_cls.return_value = self._make_scanner_mock()
+    def test_invalid_scan_type_returns_error(self, mock_cls):
         result = port_scan("example.com", scan_type="invalid_type")
-        # Should still succeed — falls back to "-F"
-        self.assertTrue(result["success"])
+
+        self.assertFalse(result["success"])
+        self.assertIn("Invalid scan_type", result["error"])
+        self.assertEqual(
+            result["valid_scan_types"],
+            ["basic", "service", "os", "full", "vuln"],
+        )
+        mock_cls.assert_not_called()
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
