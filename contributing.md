@@ -79,7 +79,7 @@ Run the tests:
 ```bash
 pytest tests/test_my_tool.py -v
 ```
-All tests should pass wihtout any warning or error.
+All tests should pass without any warning or error.
 
 Every new tool must include at least:
 
