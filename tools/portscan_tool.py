@@ -11,18 +11,28 @@ def port_scan(target: str, scan_type: str = "basic") -> dict:
     - "full"    : All 65535 ports, slow (-p-)
     - "vuln"    : Basic vulnerability scripts (--script vuln -F)
     """
+    scan_args = {
+        "basic":   "-F",
+        "service": "-sV -F",
+        "os":      "-O -F",
+        "full":    "-p-",
+        "vuln":    "--script vuln -F"
+    }
+
+    if scan_type not in scan_args:
+        return {
+            "success": False,
+            "error": (
+                f"Invalid scan_type '{scan_type}'. Valid options are: "
+                f"{', '.join(scan_args.keys())}"
+            ),
+            "valid_scan_types": list(scan_args.keys()),
+        }
+
     try:
         scanner = nmap.PortScanner()
 
-        scan_args = {
-            "basic":   "-F",
-            "service": "-sV -F",
-            "os":      "-O -F",
-            "full":    "-p-",
-            "vuln":    "--script vuln -F"
-        }
-
-        args = scan_args.get(scan_type, "-F")
+        args = scan_args[scan_type]
         scanner.scan(hosts=target, arguments=args)
 
         results = []
