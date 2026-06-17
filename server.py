@@ -9,6 +9,7 @@ from tools.fullrecon_tool import full_recon
 from tools.cve_tool import cve_lookup
 from tools.iprep_tool import ip_reputation
 from tools.crt_sh_tool import cert_transparency
+from tools.headers_tool import headers_analyzer
 
 mcp = FastMCP("AynOps")
 
@@ -22,6 +23,7 @@ mcp.tool()(full_recon)
 mcp.tool()(cve_lookup)
 mcp.tool()(ip_reputation)
 mcp.tool()(cert_transparency)
+mcp.tool()(headers_analyzer)
 
 if __name__ == "__main__":
     mcp.run()
