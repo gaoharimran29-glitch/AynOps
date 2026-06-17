@@ -95,6 +95,17 @@ class TestHeadersAnalyzer(unittest.TestCase):
         self.assertEqual(csp["severity"], "high")
 
     @patch("tools.headers_tool.urllib.request.OpenerDirector.open")
+    def test_csp_report_only_mode_detected(self, mock_open):
+        mock_open.return_value = self._make_response({
+            "Content-Security-Policy-Report-Only": "default-src 'self'",
+        })
+        result = headers_analyzer("example.com")
+        csp = result["headers"]["content-security-policy"]
+        self.assertTrue(csp["present"])
+        self.assertIn("report-only mode", csp["issue"])
+        self.assertEqual(csp["severity"], "medium")
+
+    @patch("tools.headers_tool.urllib.request.OpenerDirector.open")
     def test_x_frame_options_deny_accepted(self, mock_open):
         mock_open.return_value = self._make_response({
             "X-Frame-Options": "DENY",

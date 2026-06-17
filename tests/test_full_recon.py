@@ -17,7 +17,7 @@ class TestFullRecon(unittest.TestCase):
     @patch("tools.fullrecon_tool.tech_stack_detect", return_value={"success": True, "technologies": {}})
     @patch("tools.fullrecon_tool.asn_lookup", return_value={"success": True, "asn": "AS12345"})
     @patch("tools.fullrecon_tool.ct_summary", return_value={"success": True, "total_unique_subdomains": 10, "sample_subdomains": ["api.example.com"]})
-    def test_full_recon_calls_all_tools(self, mock_headers, mock_ct, mock_asn, mock_tech, mock_ssl, mock_ports, mock_dns, mock_whois):
+    def test_full_recon_calls_all_tools(self, mock_ct, mock_asn, mock_tech, mock_ssl, mock_ports, mock_dns, mock_whois, mock_headers):
         result = full_recon("example.com")
 
         self.assertTrue(result["success"])
@@ -50,7 +50,8 @@ class TestFullRecon(unittest.TestCase):
     @patch("tools.fullrecon_tool.tech_stack_detect", return_value={"success": True})
     @patch("tools.fullrecon_tool.asn_lookup", return_value={"success": True})
     @patch("tools.fullrecon_tool.ct_summary", return_value={"success": True})
-    def test_full_recon_tool_failure_isolated(self, mock_ct , mock_asn , mock_tech, mock_ssl, mock_ports, mock_dns, mock_whois):
+    @patch("tools.fullrecon_tool.headers_analyzer", return_value={"success": True})
+    def test_full_recon_tool_failure_isolated(self, mock_headers, mock_ct, mock_asn, mock_tech, mock_ssl, mock_ports, mock_dns, mock_whois):
         """One tool crashing must not crash the whole recon."""
         result = full_recon("example.com")
 
@@ -68,7 +69,8 @@ class TestFullRecon(unittest.TestCase):
     @patch("tools.fullrecon_tool.tech_stack_detect", return_value={"success": True})
     @patch("tools.fullrecon_tool.asn_lookup", return_value={"success": True})
     @patch("tools.fullrecon_tool.ct_summary", return_value={"success": True})
-    def test_full_recon_scanned_at_is_iso_format(self, *_):
+    @patch("tools.fullrecon_tool.headers_analyzer", return_value={"success": True})
+    def test_full_recon_scanned_at_is_iso_format(self, mock_headers, mock_ct, mock_asn, mock_tech, mock_ssl, mock_ports, mock_dns, mock_whois):
         from datetime import datetime
         result = full_recon("example.com")
         # Should be parseable ISO timestamp ending in Z
