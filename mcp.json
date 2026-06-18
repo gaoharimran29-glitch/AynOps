@@ -39,6 +39,12 @@
       "requires_api_key": false
     },
     {
+      "name": "headers_analyzer",
+      "description": "Analyze HTTP response security headers — checks HSTS, CSP, X-Frame-Options, and more with severity ratings and misconfiguration details",
+      "input": {"domain": "string"},
+      "requires_api_key": false
+    },
+    {
       "name": "tech_stack_detect",
       "description": "Fingerprint web server, CMS, CDN, JS frameworks, and security headers",
       "input": {"domain": "string"},

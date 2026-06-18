@@ -43,10 +43,11 @@ It is also listed on glama mcp registry.
 | `dns_enumeration` | A, AAAA, MX, NS, TXT, CNAME, SOA records + common subdomain brute-forcing |
 | `port_scan` | Nmap-powered scanner with service/version detection and security warnings |
 | `ssl_inspect` | SSL/TLS certificate — issuer, expiry, cipher strength, SANs, TLS version |
+| `headers_analyzer` | Analyzes HTTP security headers — checks HSTS, CSP, X-Frame-Options, and more with severity ratings and misconfiguration details |
 | `tech_stack_detect` | Web server, CMS, JS frameworks, CDN, analytics, and security header scoring |
 | `cert_transparency` | Subdomain discovery via crt.sh Certificate Transparency logs with an automatic fallback to HackerTarget passive DNS on timeouts |
 | `asn_lookup` | Autonomous System Number (ASN) and network ownership lookup — identifies hosting provider, ISP, organization, geolocation, and infrastructure ownership for domains or IP addresses |
-| `full_recon` | Runs all 7 core tools in parallel and returns combined results for Claude to analyze |
+| `full_recon` | Runs all core tools in parallel and returns combined results for Claude to analyze |
 | `cve_lookup` | Search NVD for known CVEs by software name and version (no API key required) |
 | `ip_reputation` | Check if an IP is flagged as malicious via AbuseIPDB (api key requied) |
 ---
@@ -214,6 +215,7 @@ Do a WHOIS lookup on example.com
 Run DNS enumeration on github.com
 Scan ports on scanme.nmap.org
 Inspect the SSL certificate of stripe.com
+Analyze HTTP security headers for github.com
 Detect the tech stack of wordpress.org
 Look up CVEs for apache 2.4.49
 Look up CVEs for log4j 2.14.1
