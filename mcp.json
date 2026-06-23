@@ -45,6 +45,12 @@
       "requires_api_key": false
     },
     {
+      "name": "email_security_check",
+      "description": "Check SPF, DKIM, and DMARC DNS records for a domain to assess email anti-spoofing configuration",
+      "input": {"domain": "string"},
+      "requires_api_key": false
+    },
+    {
       "name": "tech_stack_detect",
       "description": "Fingerprint web server, CMS, CDN, JS frameworks, and security headers",
       "input": {"domain": "string"},
