@@ -119,6 +119,7 @@ def _check_dmarc(domain: str, recommendations: List[str]) -> Dict[str, Any]:
     txt_records, failed = _query_txt(f"_dmarc.{domain}")
 
     if failed:
+        recommendations.append("Could not verify DMARC — DNS lookup timed out.")
         return {"found": False, "record": None, "policy": None, "score": 0}
 
     dmarc_records = [r for r in txt_records if r.lower().startswith("v=dmarc1")]
@@ -203,9 +204,6 @@ def email_security_check(domain: str) -> dict:
         dkim = _check_dkim(domain, recommendations)
 
         raw_score = spf.pop("score") + dmarc.pop("score") + dkim.pop("score")
-        
-        if recommendations and raw_score == 100:
-            raw_score = 90
 
         if raw_score >= 90:
             rating = "Excellent"
