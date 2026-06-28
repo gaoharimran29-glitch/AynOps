@@ -48,9 +48,10 @@ It is also listed on glama mcp registry.
 | `tech_stack_detect` | Web server, CMS, JS frameworks, CDN, analytics, and security header scoring |
 | `cert_transparency` | Subdomain discovery via crt.sh Certificate Transparency logs with an automatic fallback to HackerTarget passive DNS on timeouts |
 | `asn_lookup` | Autonomous System Number (ASN) and network ownership lookup — identifies hosting provider, ISP, organization, geolocation, and infrastructure ownership for domains or IP addresses |
-| `full_recon` | Runs all core tools in parallel and returns combined results for Claude to analyze |
 | `cve_lookup` | Search NVD for known CVEs by software name and version (no API key required) |
 | `ip_reputation` | Check if an IP is flagged as malicious via AbuseIPDB (api key requied) |
+| `full_recon` | Runs all core tools in parallel and returns combined results with claude analysis |
+
 ---
 
 ## 📸 Demo
@@ -74,7 +75,7 @@ Claude: Found 2 critical CVEs for Apache 2.4.49:
 ```
 You: Do a complete security recon on reddit.com
 
-Claude: [calls full_recon → runs 6 tools in parallel → delivers full analysis]
+Claude: [calls full_recon → runs all core tools in parallel → delivers full analysis]
 ```
 
 <div align="center">
@@ -284,6 +285,7 @@ Intended for:
 ├── requirements.txt      # Python dependencies
 ├── mcp.json              # MCP server metadata
 ├── glama.json            # Glama MCP metadata
+├── server.json           # MCP all tools metadata
 ├── Dockerfile            # Docker image definition
 ├── SECURITY.md           # Security policy
 ├── CONTRIBUTING.md       # Contribution guidelines

@@ -71,12 +71,6 @@
       "api_key_url": "https://ipapi.com/"
     },
     {
-      "name": "full_recon",
-      "description": "Runs core tools in parallel against a domain and returns combined results",
-      "input": {"domain": "string"},
-      "requires_api_key": false
-    },
-    {
       "name": "cve_lookup",
       "description": "Search NVD database for known CVEs by software name and version",
       "input": {"software": "string", "version": "string"},
@@ -89,6 +83,12 @@
       "requires_api_key": true,
       "api_key_env": "ABUSEIPDB_API_KEY",
       "api_key_url": "https://www.abuseipdb.com"
+    },
+    {
+      "name": "full_recon",
+      "description": "Runs all core tools in parallel against a domain and returns combined results with claude anlaysis",
+      "input": {"domain": "string"},
+      "requires_api_key": false
     }
   ],
   "environment_variables": [
