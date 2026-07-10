@@ -11,6 +11,7 @@ from tools.iprep_tool import ip_reputation
 from tools.crt_sh_tool import cert_transparency
 from tools.headers_tool import headers_analyzer
 from tools.email_security_tool import email_security_check
+from tools.cloud_exposure_tool import cloud_exposure_check
 
 mcp = FastMCP("AynOps")
 
@@ -26,6 +27,7 @@ mcp.tool()(ip_reputation)
 mcp.tool()(cert_transparency)
 mcp.tool()(headers_analyzer)
 mcp.tool()(email_security_check)
+mcp.tool()(cloud_exposure_check)
 
 if __name__ == "__main__":
     mcp.run()
