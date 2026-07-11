@@ -85,6 +85,12 @@
       "api_key_url": "https://www.abuseipdb.com"
     },
     {
+      "name": "cloud_exposure_check",
+      "description": "Checks for publicly accessible AWS S3, Azure Blob Storage, and Google Cloud Storage buckets from the target domain",
+      "input": {"domain": "string"},
+      "requires_api_key": false
+    },
+    {
       "name": "full_recon",
       "description": "Runs all core tools in parallel against a domain and returns combined results with claude anlaysis",
       "input": {"domain": "string"},
