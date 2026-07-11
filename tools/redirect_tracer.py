@@ -18,6 +18,7 @@ from utils.helpers import is_valid_domain
 _REDIRECT_STATUSES = (301, 302, 303, 307, 308)
 _MAX_HOPS = 15
 _LONG_CHAIN_THRESHOLD = 5
+_REQUEST_HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; SecurityScanner/1.0)"}
 
 
 def _hostname_is_private_ip(hostname: Optional[str]) -> bool:
@@ -110,7 +111,9 @@ def trace_redirects(url: str) -> dict:
                 break
             seen_urls.add(current_url)
 
-            resp = session.get(current_url, allow_redirects=False, timeout=10)
+            resp = session.get(
+                current_url, allow_redirects=False, timeout=10, headers=_REQUEST_HEADERS
+            )
             status_code = resp.status_code
             current_parsed = urlparse(current_url)
 
@@ -154,11 +157,18 @@ def trace_redirects(url: str) -> dict:
                         "description": f"Stays on HTTP, never upgrades to HTTPS: {current_url} -> {next_url}",
                     })
 
-                if _hostname_is_private_ip(next_parsed.hostname):
+                is_private_target = _hostname_is_private_ip(next_parsed.hostname)
+                if is_private_target:
                     hop_issues.append("Redirects to a private/internal IP address")
                     issues_found.append({
                         "hop": hop_number, "type": "private_ip_leak", "severity": "high",
-                        "description": f"Redirect target's hostname is a private/internal IP: {next_parsed.hostname}",
+                        "description": (
+                            f"Redirect target's hostname is a private/internal IP: "
+                            f"{next_parsed.hostname}. Trace halted here — this tool "
+                            f"does not follow redirects into private/internal address "
+                            f"space, since doing so would make the tool itself an SSRF "
+                            f"vector for whatever host it runs on."
+                        ),
                     })
 
                 if (
@@ -179,6 +189,10 @@ def trace_redirects(url: str) -> dict:
 
                 hop_entry["issue"] = "; ".join(hop_issues) if hop_issues else None
                 chain.append(hop_entry)
+
+                if is_private_target:
+                    break
+
                 current_url = next_url
                 continue
 

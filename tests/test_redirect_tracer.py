@@ -142,6 +142,24 @@ class TestTraceRedirects(unittest.TestCase):
         self.assertNotIn("No internal hostnames leaked in chain", result["security_notes"])
 
     @patch("tools.redirect_tracer.requests.Session.get")
+    def test_private_ip_redirect_target_is_never_fetched(self, mock_get):
+        """Flagging a private-IP target isn't enough on its own, the tool
+        must stop before actually requesting it, or the tool itself becomes
+        an SSRF vector for whatever host it runs on. A second mock response
+        is queued but must never be consumed."""
+        mock_get.side_effect = [
+            _resp(301, {"Location": "http://169.254.169.254/latest/meta-data/"}),
+            _resp(200),  # must never be reached
+        ]
+        result = trace_redirects("http://example.com")
+        self.assertTrue(result["success"])
+        self.assertEqual(mock_get.call_count, 1)
+        self.assertEqual(result["total_hops"], 1)
+        self.assertEqual(result["chain"][0]["redirect_to"], "http://169.254.169.254/latest/meta-data/")
+        priv = [i for i in result["issues_found"] if i["type"] == "private_ip_leak"]
+        self.assertEqual(len(priv), 1)
+
+    @patch("tools.redirect_tracer.requests.Session.get")
     def test_public_ip_redirect_target_not_flagged(self, mock_get):
         mock_get.side_effect = [
             _resp(301, {"Location": "http://8.8.8.8/page"}),
