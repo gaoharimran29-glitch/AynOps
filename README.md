@@ -329,3 +329,36 @@ Built by **Gaohar Imran**
 ---
 
 > ⭐ If this project helped you, consider giving it a star on GitHub!
+
+
+
+
+
+
+
+
+## 🐳 Docker Setup
+
+You can also run AynOps locally using Docker. Make sure you have Docker installed on your system.
+
+### 1. Build the Docker Image
+Navigate to the root directory of the project and run the following command to build the image:
+```bash
+docker build -t
+aynops:latest .
+```
+docker run -d -p 
+8000:8000 --name 
+aynops-container 
+aynops:latest
+```
+### 2. Verify the Application
+The MCP server will be
+running at
+http://localhost:8000...
+```bash
+curl
+http://localhost:8000
+/health
+```
+
