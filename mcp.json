@@ -114,7 +114,7 @@
   },
   "claude_desktop_config": {
   "mcpServers": {
-    "cybersecurity": {
+    "AnyOps": {
       "command": "C:\\full\\path\\to\\AynOps\\.venv\\Scripts\\python.exe",
       "args": ["C:\\full\\path\\to\\AynOps\\server.py"],
       "env": {
