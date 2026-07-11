@@ -90,6 +90,12 @@
       "input": {"domain": "string"},
       "requires_api_key": false
     }
+    {
+      "name": "trace_redirects",
+      "description": "Trace the full HTTP redirect chain for a URL hop by hop, flagging TLS downgrades, private-IP leaks, redirect loops, cross-domain hops, and overly long chains",
+      "input": {"url": "string"},
+      "requires_api_key": false
+    }
   ],
   "environment_variables": [
     {

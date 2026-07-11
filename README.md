@@ -51,6 +51,7 @@ It is also listed on glama mcp registry.
 | `cve_lookup` | Search NVD for known CVEs by software name and version (no API key required) |
 | `ip_reputation` | Check if an IP is flagged as malicious via AbuseIPDB (api key requied) |
 | `full_recon` | Runs all core tools in parallel and returns combined results with claude analysis |
+| `trace_redirects` | Traces the full HTTP redirect chain hop by hop — flags TLS downgrades, private-IP leaks, redirect loops, cross-domain hops, and overly long chains |
 
 ---
 
