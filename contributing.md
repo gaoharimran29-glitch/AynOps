@@ -126,10 +126,6 @@ VIRUSTOTAL_API_KEY=your_api_key_here
 
 ---
 
-### 7. Submit Your Changes
-
-Open a pull request and submit the changes
-
 ## Steps to Contribute
 
 1. Fork the repo
