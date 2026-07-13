@@ -99,7 +99,7 @@ Claude: [calls full_recon → runs all core tools in parallel → delivers full 
 - **Claude Desktop** — [download](https://claude.ai/download)
 - **Nmap** — required for port scanning ([download](https://nmap.org/download.html))
 - **Git** — [download](https://git-scm.com/)
-
+- **uv** - https://docs.astral.sh/uv/getting-started/installation
 ---
 
 ## ⚙️ Installation
@@ -111,11 +111,18 @@ git clone https://github.com/AynOps/AynOps
 cd AynOps
 ```
 
-### Step 2 — Install Python dependencies
+### Step 2 — Create virtual environment and install dependencies
 
 ```bash
-pip install -r requirements.txt
+uv sync
 ```
+If `uv` is not installed, install it using:
+
+```bash
+pip install uv
+```
+
+/
 
 ### Step 3 — Install Nmap
 
