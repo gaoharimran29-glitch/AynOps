@@ -1,4 +1,5 @@
 fastmcp==3.2.4
+packaging==24.1
 python-whois==0.9.6
 python-nmap==0.7.1
 dnspython==2.8.0
