@@ -32,6 +32,8 @@ def asn_lookup(target: str) -> dict:
         except ValueError:
             ip = socket.getaddrinfo(target, None)[0][4][0]
 
+        # Team Cymru bulk WHOIS query (port 43 is the standard WHOIS port).
+        # Format documented at https://team-cymru.com/community-services/ip-to-asn-mapping/
         query = f"begin\nverbose\n{ip}\nend\n"
         with socket.create_connection(("whois.cymru.com", 43), timeout=15) as sock:
             sock.sendall(query.encode())
@@ -41,8 +43,15 @@ def asn_lookup(target: str) -> dict:
                 if not chunk:
                     break
                 chunks.append(chunk)
+            # AS names occasionally contain non-ASCII; replace avoids decode crashes.
             response = b"".join(chunks).decode("utf-8", errors="replace")
 
+        # Team Cymru verbose response is pipe-delimited. First line is a header
+        # (e.g. "AS | IP | BGP Prefix | CC | Registry | Allocated | AS Name"),
+        # followed by one data line per queried IP. We accept the first line
+        # whose first field is numeric (this skips the header and any blank lines).
+        # Field indices: 0=AS, 1=IP, 2=BGP Prefix, 3=CC, 4=Registry,
+        #                5=Allocated, 6=AS Name
         lines = [line for line in response.strip().splitlines() if line.strip()]
         if not lines:
             return {
@@ -63,6 +72,8 @@ def asn_lookup(target: str) -> dict:
                 "error": "Unexpected or malformed response from Team Cymru WHOIS",
             }
 
+        # Normalize AS number to the "AS<number>" convention (Team Cymru returns
+        # the bare number; the prefix keeps downstream consumers consistent).
         asn_val = data_line[0]
         asn_string = f"AS{asn_val}" if not asn_val.startswith("AS") else asn_val
 

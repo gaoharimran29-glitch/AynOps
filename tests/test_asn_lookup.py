@@ -127,6 +127,20 @@ class TestAsnLookup(unittest.TestCase):
         self.assertFalse(result["success"])
         self.assertIn("malformed", result["error"])
 
+    @patch("tools.asn_tool.socket.create_connection")
+    def test_header_only_response_returns_error(self, mock_create_connection):
+        # Response with only a header line and no data lines should be rejected.
+        header_only = (
+            "AS      | IP               | BGP Prefix          | CC | Registry | "
+            "Allocated  | AS Name\n"
+        )
+        mock_create_connection.return_value = _make_fake_socket(header_only)
+
+        result = asn_lookup("8.8.8.8")
+
+        self.assertFalse(result["success"])
+        self.assertIn("malformed", result["error"])
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
