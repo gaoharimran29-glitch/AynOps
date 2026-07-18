@@ -11,61 +11,83 @@
   },
   "runtime": "python",
   "runtime_version": ">=3.12",
-  "transport": ["stdio"],
+  "transport": [
+    "stdio"
+  ],
   "tools": [
     {
       "name": "whois_lookup",
       "description": "Query domain registration data — owner, registrar, creation date, expiry, name servers",
-      "input": {"domain": "string"},
+      "input": {
+        "domain": "string"
+      },
       "requires_api_key": false
     },
     {
       "name": "dns_enumeration",
       "description": "Enumerate DNS records and brute-force common subdomains",
-      "input": {"domain": "string"},
+      "input": {
+        "domain": "string"
+      },
       "requires_api_key": false
     },
     {
       "name": "port_scan",
       "description": "Nmap-powered port scanner with service and version detection",
-      "input": {"target": "string", "scan_type": "string"},
+      "input": {
+        "target": "string",
+        "scan_type": "string"
+      },
       "requires_api_key": false,
       "requires_system_dependency": "nmap"
     },
     {
       "name": "ssl_inspect",
       "description": "Inspect SSL/TLS certificate — issuer, expiry, cipher, SANs, TLS version",
-      "input": {"domain": "string", "port": "integer"},
+      "input": {
+        "domain": "string",
+        "port": "integer"
+      },
       "requires_api_key": false
     },
     {
       "name": "headers_analyzer",
       "description": "Analyze HTTP response security headers — checks HSTS, CSP, X-Frame-Options, and more with severity ratings and misconfiguration details",
-      "input": {"domain": "string"},
+      "input": {
+        "domain": "string"
+      },
       "requires_api_key": false
     },
     {
       "name": "email_security_check",
       "description": "Check SPF, DKIM, and DMARC DNS records for a domain to assess email anti-spoofing configuration",
-      "input": {"domain": "string"},
+      "input": {
+        "domain": "string"
+      },
       "requires_api_key": false
     },
     {
       "name": "tech_stack_detect",
       "description": "Fingerprint web server, CMS, CDN, JS frameworks, and security headers",
-      "input": {"domain": "string"},
+      "input": {
+        "domain": "string"
+      },
       "requires_api_key": false
     },
     {
       "name": "cert_transparency",
       "description": "Subdomain discovery and Certificate Transparency logs with an automatic fallback to HackerTarget passive DNS on timeouts",
-      "input": {"domain": "string"},
+      "input": {
+        "domain": "string"
+      },
       "requires_api_key": false
     },
     {
       "name": "asn_lookup",
       "description": "Find ASN, ISP, organization and geolocation for any IP or domain",
-      "input": {"target": "string"},
+      "input": {
+        "target": "string"
+      },
       "requires_api_key": true,
       "api_key_env": "IP_API_KEY",
       "api_key_url": "https://ipapi.com/"
@@ -73,13 +95,18 @@
     {
       "name": "cve_lookup",
       "description": "Search NVD database for known CVEs by software name and version",
-      "input": {"software": "string", "version": "string"},
+      "input": {
+        "software": "string",
+        "version": "string"
+      },
       "requires_api_key": false
     },
     {
       "name": "ip_reputation",
       "description": "Check if an IP address is flagged as malicious via AbuseIPDB",
-      "input": {"ip_address": "string"},
+      "input": {
+        "ip_address": "string"
+      },
       "requires_api_key": true,
       "api_key_env": "ABUSEIPDB_API_KEY",
       "api_key_url": "https://www.abuseipdb.com"
@@ -87,19 +114,33 @@
     {
       "name": "cloud_exposure_check",
       "description": "Checks for publicly accessible AWS S3, Azure Blob Storage, and Google Cloud Storage buckets from the target domain",
-      "input": {"domain": "string"},
+      "input": {
+        "domain": "string"
+      },
       "requires_api_key": false
     },
     {
       "name": "full_recon",
       "description": "Runs all core tools in parallel against a domain and returns combined results",
-      "input": {"domain": "string"},
+      "input": {
+        "domain": "string"
+      },
       "requires_api_key": false
     },
     {
       "name": "trace_redirects",
       "description": "Trace the full HTTP redirect chain for a URL hop by hop, flagging TLS downgrades, private-IP leaks, redirect loops, cross-domain hops, and overly long chains",
-      "input": {"url": "string"},
+      "input": {
+        "url": "string"
+      },
+      "requires_api_key": false
+    },
+    {
+      "name": "robots_txt_inspect",
+      "description": "Fetch and parse the robots.txt file for a given domain to reveal hidden directories and sitemaps",
+      "input": {
+        "domain": "string"
+      },
       "requires_api_key": false
     }
   ],
@@ -125,17 +166,19 @@
     ]
   },
   "claude_desktop_config": {
-  "mcpServers": {
-    "AynOps": {
-      "command": "C:\\full\\path\\to\\AynOps\\.venv\\Scripts\\python.exe",
-      "args": ["C:\\full\\path\\to\\AynOps\\server.py"],
-      "env": {
-        "ABUSEIPDB_API_KEY": "your-api-key-here",
-        "IP_API_KEY": "your-api-key-here"
+    "mcpServers": {
+      "AynOps": {
+        "command": "C:\\full\\path\\to\\AynOps\\.venv\\Scripts\\python.exe",
+        "args": [
+          "C:\\full\\path\\to\\AynOps\\server.py"
+        ],
+        "env": {
+          "ABUSEIPDB_API_KEY": "your-api-key-here",
+          "IP_API_KEY": "your-api-key-here"
+        }
       }
     }
-  }
-},
+  },
   "tags": [
     "cybersecurity",
     "reconnaissance",
