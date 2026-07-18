@@ -68,8 +68,76 @@ def test_robots_txt_inspect_fallback_to_http(mock_get):
 @patch("tools.robots_txt_tool.requests.get")
 def test_robots_txt_inspect_failure(mock_get):
     mock_get.side_effect = requests.RequestException("Timeout")
-    
+
     result = robots_txt_inspect("example.com")
-    
+
     assert result["success"] is False
     assert "Failed to fetch robots.txt" in result["error"]
+
+@patch("tools.robots_txt_tool.requests.get")
+def test_robots_txt_inspect_parses_crawl_delay_and_host(mock_get):
+    """Crawl-delay and Host directives should be parsed, not always None.
+
+    Regression test for the bug introduced in PR #98 where the return shape
+    advertised crawl_delay/host fields but the parser never populated them.
+    """
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.url = "https://example.com/robots.txt"
+    mock_response.text = (
+        "User-agent: *\n"
+        "Crawl-delay: 10\n"
+        "Host: example.com\n"
+        "Disallow: /private\n"
+    )
+    mock_get.return_value = mock_response
+
+    result = robots_txt_inspect("example.com")
+
+    assert result["success"] is True
+    assert result["crawl_delay"] == "10"
+    assert result["host"] == "example.com"
+    assert result["disallowed_paths"] == ["/private"]
+
+@patch("tools.robots_txt_tool.requests.get")
+def test_robots_txt_inspect_crawl_delay_and_host_absent_when_not_present(mock_get):
+    """crawl_delay and host remain None when the directives are absent.
+
+    Locks in the backward-compatible default for robots.txt files that do
+    not include Crawl-delay or Host directives.
+    """
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.url = "https://example.com/robots.txt"
+    mock_response.text = "User-agent: *\nDisallow: /private\n"
+    mock_get.return_value = mock_response
+
+    result = robots_txt_inspect("example.com")
+
+    assert result["success"] is True
+    assert result["crawl_delay"] is None
+    assert result["host"] is None
+
+@patch("tools.robots_txt_tool.requests.get")
+def test_robots_txt_inspect_crawl_delay_uses_last_seen_value(mock_get):
+    """When multiple Crawl-delay directives appear, the last one wins.
+
+    The top-level return shape exposes a single crawl_delay value (it is
+    semantically per-User-agent per RFC 9309). The parser uses last-seen
+    as the pragmatic top-level summary.
+    """
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.url = "https://example.com/robots.txt"
+    mock_response.text = (
+        "User-agent: *\n"
+        "Crawl-delay: 5\n"
+        "User-agent: Googlebot\n"
+        "Crawl-delay: 30\n"
+    )
+    mock_get.return_value = mock_response
+
+    result = robots_txt_inspect("example.com")
+
+    assert result["success"] is True
+    assert result["crawl_delay"] == "30"

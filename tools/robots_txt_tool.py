@@ -33,7 +33,9 @@ def robots_txt_inspect(domain: str) -> dict:
         current_disallow = []
         
         sitemaps = []
-        
+        crawl_delay = None
+        host = None
+
         for line in content.splitlines():
             # Strip inline comments first
             if "#" in line:
@@ -72,7 +74,21 @@ def robots_txt_inspect(domain: str) -> dict:
                 sitemap = line.split(":", 1)[1].strip()
                 if sitemap:
                     sitemaps.append(sitemap)
-                    
+
+            elif line_lower.startswith("crawl-delay:"):
+                # Per RFC 9309, Crawl-delay is a per-User-agent directive.
+                # The top-level return shape exposes the last-seen value.
+                value = line.split(":", 1)[1].strip()
+                if value:
+                    crawl_delay = value
+
+            elif line_lower.startswith("host:"):
+                # `Host:` is a non-standard but widely-recognized directive
+                # (originally from Yandex) used to specify the primary mirror.
+                value = line.split(":", 1)[1].strip()
+                if value:
+                    host = value
+
         # Add the last rule block if it has anything
         if current_allow or current_disallow or current_agent == "*":
             # Avoid adding empty duplicate '*' rules if we haven't seen anything
@@ -97,8 +113,8 @@ def robots_txt_inspect(domain: str) -> dict:
             "allowed_paths": list(dict.fromkeys(all_allowed)),
             "disallowed_paths": list(dict.fromkeys(all_disallowed)),
             "sitemaps": list(dict.fromkeys(sitemaps)),
-            "crawl_delay": None,
-            "host": None,
+            "crawl_delay": crawl_delay,
+            "host": host,
             "rules": rules
         }
 
