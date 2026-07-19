@@ -204,7 +204,7 @@ Add this configuration:
 
 > ⚠️ Always use the **full absolute path** to your `.venv` Python executable — not just `python` or `python3`. Claude Desktop may use a different Python installation otherwise.
 
-> **Note:** `ABUSEIPDB_API_KEY` is only required for the `ip_reputation` tool. Get a free key at [abuseipdb.com](https://www.abuseipdb.com). The `asn_lookup` tool uses Team Cymru WHOIS and does not require an API key.
+> **Note:** `ABUSEIPDB_API_KEY` is only required for the `ip_reputation` tool. Get a free key at [abuseipdb.com](https://www.abuseipdb.com).
 
 ### Step 5 — Restart Claude Desktop
 
