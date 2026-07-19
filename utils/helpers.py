@@ -16,6 +16,20 @@ def is_valid_domain(domain: str) -> bool:
 
     return _DOMAIN_PATTERN.fullmatch(domain) is not None
 
+def normalize_domain(domain: str | None) -> str:
+    """Normalize a user-provided domain for consistent validation.
+
+    - strip surrounding whitespace
+    - lowercase
+    - remove a single trailing dot (FQDN form)
+
+    Returns an empty string when the input is missing/blank after normalization.
+    """
+    if domain is None:
+        return ""
+    normalized = str(domain).strip().lower().rstrip(".")
+    return normalized
+
 def get_cvss_details(cve: dict) -> dict:
     """Extract CVSS severity and base score from an NVD CVE object.
 

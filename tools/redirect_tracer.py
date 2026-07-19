@@ -13,7 +13,7 @@ from typing import Any, Dict, List, Optional
 
 import requests
 
-from utils.helpers import is_valid_domain
+from utils.helpers import is_valid_domain, normalize_domain
 
 _REDIRECT_STATUSES = (301, 302, 303, 307, 308)
 _MAX_HOPS = 15
@@ -97,7 +97,8 @@ def trace_redirects(url: str) -> dict:
     original_url = _normalize_url(url)
 
     parsed = urlparse(original_url)
-    if not parsed.hostname or not is_valid_domain(parsed.hostname):
+    hostname = normalize_domain(parsed.hostname)
+    if not parsed.hostname or not is_valid_domain(hostname):
         return {"success": False, "error": "Invalid domain format"}
 
     chain: List[Dict[str, Any]] = []

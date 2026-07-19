@@ -10,7 +10,7 @@ from curl_cffi import requests
 from curl_cffi.requests.errors import RequestsError
 from typing import Any, List, Dict
 
-from utils.helpers import is_valid_domain
+from utils.helpers import is_valid_domain, normalize_domain
 
 _REDIRECT_STATUSES = (301, 302, 303, 307, 308)
 _MAX_REDIRECT_HOPS = 8
@@ -83,6 +83,7 @@ def headers_analyzer(domain: str) -> dict:
         ``{"success": True, "domain": ..., "headers": {...}}`` on success,
         or ``{"success": False, "error": ...}`` on failure.
     """
+    domain = normalize_domain(domain)
     if not is_valid_domain(domain):
         return {"success": False, "error": "Invalid domain format"}
 

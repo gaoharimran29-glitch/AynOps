@@ -1,11 +1,12 @@
 import requests
-from utils.helpers import is_valid_domain
+from utils.helpers import is_valid_domain, normalize_domain
 
 def robots_txt_inspect(domain: str) -> dict:
     """
     Fetch and parse the robots.txt file for a given domain to reveal hidden directories and sitemaps.
     """
     try:
+        domain = normalize_domain(domain)
         if not is_valid_domain(domain):
             return {"success": False, "error": "Invalid domain format"}
 

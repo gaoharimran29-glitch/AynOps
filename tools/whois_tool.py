@@ -1,12 +1,13 @@
 import socket
 import whois
-from utils.helpers import is_valid_domain
+from utils.helpers import is_valid_domain, normalize_domain
 
 WHOIS_TIMEOUT_SECONDS = 10
 
 def whois_lookup(domain: str) -> dict:
     """Perform WHOIS lookup for a domain."""
     try:
+        domain = normalize_domain(domain)
         if not is_valid_domain(domain):
             return {"success": False, "error": "Invalid domain format"}
 

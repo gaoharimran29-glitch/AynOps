@@ -1,11 +1,12 @@
 import requests
-from utils.helpers import is_valid_domain
+from utils.helpers import is_valid_domain, normalize_domain
 
 def tech_stack_detect(domain: str) -> dict:
     """
     Detect technology stack of a website.
     Identifies web server, frameworks, CMS, CDN, analytics, and security headers.
     """
+    domain = normalize_domain(domain)
     if not is_valid_domain(domain):
         return {"success": False, "error": "Invalid domain format"}
 
