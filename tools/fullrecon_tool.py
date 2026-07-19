@@ -1,6 +1,6 @@
 from tools.signals.registry import TOOL_REGISTRY
 from collections import defaultdict
-from utils.helpers import is_valid_domain
+from utils.helpers import is_valid_domain, normalize_domain
 from tools.signals.extractor import extract_signals
 import concurrent.futures
 from datetime import datetime, timezone
@@ -52,6 +52,7 @@ def full_recon(domain: str) -> dict:
     """Execute all registered reconnaissance tools in dependency-aware waves,
     extract security signals, and build the final threat analysis payload.
     """
+    domain = normalize_domain(domain)
     if not is_valid_domain(domain):
         return {"success": False, "error": "Invalid domain format"}
 

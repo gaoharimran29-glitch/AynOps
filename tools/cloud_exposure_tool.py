@@ -1,4 +1,4 @@
-from utils.helpers import is_valid_domain
+from utils.helpers import is_valid_domain, normalize_domain
 import tldextract
 import requests
 import re
@@ -139,6 +139,7 @@ def check_provider(bucket, provider):
 
 def cloud_exposure_check(domain: str) -> dict:
     """Takes domain as input and return complete metrics and results for cloud urls exposed or not for a company"""
+    domain = normalize_domain(domain)
     if not is_valid_domain(domain):
         return {"success": False, "error": "Invalid domain format"}
     

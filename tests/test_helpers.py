@@ -1,4 +1,4 @@
-from utils.helpers import is_valid_domain , get_cvss_details , get_english_description , safe_parse_datetime
+from utils.helpers import is_valid_domain, normalize_domain, get_cvss_details, get_english_description, safe_parse_datetime
 from datetime import datetime, timezone
 import unittest
 
@@ -15,6 +15,21 @@ class TestHelpers(unittest.TestCase):
             with self.subTest(domain=d):
                 self.assertFalse(is_valid_domain(d))
 
+
+    # ── normalize_domain ─────────────────────────────────────
+    def test_normalize_domain_strips_and_lowercases(self):
+        self.assertEqual(normalize_domain("  Google.COM  "), "google.com")
+
+    def test_normalize_domain_removes_trailing_dot(self):
+        self.assertEqual(normalize_domain("google.com."), "google.com")
+
+    def test_normalize_domain_empty_after_strip(self):
+        self.assertEqual(normalize_domain("   "), "")
+        self.assertEqual(normalize_domain(None), "")
+
+    def test_normalize_domain_then_validates(self):
+        self.assertTrue(is_valid_domain(normalize_domain("Google.COM")))
+        self.assertTrue(is_valid_domain(normalize_domain("google.com.")))
     # ── get_cvss_details ─────────────────────────────────────
     def test_cvss_v31_extraction(self):
         cve = {

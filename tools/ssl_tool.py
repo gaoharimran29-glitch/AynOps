@@ -1,13 +1,14 @@
 import ssl
 import socket
 from datetime import datetime, timezone
-from utils.helpers import is_valid_domain
+from utils.helpers import is_valid_domain, normalize_domain
 
 def ssl_inspect(domain: str, port: int = 443) -> dict:
     """
     Inspect SSL/TLS certificate details for a domain.
     Returns cert validity, issuer, SANs, expiry, and cipher info.
     """
+    domain = normalize_domain(domain)
     if not is_valid_domain(domain):
         return {"success": False, "error": "Invalid domain format"}
 

@@ -3,7 +3,7 @@ import concurrent.futures
 import dns.resolver
 import dns.exception
 from typing import Any, Dict, List, Tuple
-from utils.helpers import is_valid_domain
+from utils.helpers import is_valid_domain, normalize_domain
 
 # Base generic defaults
 BASE_DKIM_SELECTORS = [
@@ -193,6 +193,7 @@ def email_security_check(domain: str) -> dict:
     """
     domain = domain.strip().lower()
 
+    domain = normalize_domain(domain)
     if not is_valid_domain(domain):
         return {"success": False, "error": "Invalid domain format"}
 

@@ -3,7 +3,7 @@ from curl_cffi.requests.errors import RequestsError
 from typing import Dict, Any, Set
 import requests as standard_requests  # Used for the quick fallback API
 
-from utils.helpers import is_valid_domain
+from utils.helpers import is_valid_domain, normalize_domain
 
 def fetch_from_hackertarget(domain: str) -> Set[str]:
     """
@@ -36,6 +36,7 @@ def cert_transparency(domain: str) -> Dict[str, Any]:
     """
     domain = domain.strip().lower()
 
+    domain = normalize_domain(domain)
     if not is_valid_domain(domain):
         return {
             "success": False,

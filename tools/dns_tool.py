@@ -1,5 +1,5 @@
 import dns.resolver
-from utils.helpers import is_valid_domain
+from utils.helpers import is_valid_domain, normalize_domain
 
 PUBLIC_RESOLVERS = ["1.1.1.1", "8.8.8.8"]
 
@@ -29,6 +29,7 @@ def dns_enumeration(domain: str) -> dict:
     Enumerate DNS records for a domain.
     Returns A, AAAA, MX, NS, TXT, CNAME, SOA records.
     """
+    domain = normalize_domain(domain)
     if not is_valid_domain(domain):
         return {"success": False, "error": "Invalid domain format"}
 
