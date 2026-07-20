@@ -15,6 +15,10 @@ def extract_signals(results):
     "missing_security_headers": [],     # headers
     "email_security":           {},     # email_security_tool
     "ip_reputation_flagged":    False,  # ip_reputation
+    "asn_number":               None,   # asn
+    "asn_org":                  None,   # asn
+    "asn_isp":                  None,   # asn (legacy/org alias when present)
+    "asn_country":              None,   # asn
     # ── pre-flagged warnings for Claude ──────────────────
     "auto_warnings":            [],
     }
