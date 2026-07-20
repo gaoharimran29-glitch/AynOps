@@ -219,6 +219,71 @@ What cybersecurity tools do you have available?
 Claude should list all tools.
 
 ---
+
+### Alternative — Run with Docker
+
+The repository ships a `Dockerfile` that installs Nmap, `uv`, and project
+dependencies so you do not need a local Python virtualenv.
+
+**Build**
+
+```bash
+git clone https://github.com/AynOps/AynOps
+cd AynOps
+docker build -t aynops .
+```
+
+**Smoke-test the image** (stdio MCP servers speak JSON-RPC on stdin/stdout; a
+one-shot help/version style check is enough to confirm the process starts):
+
+```bash
+docker run --rm -i aynops
+# process waits for MCP JSON-RPC on stdin — Ctrl+C to exit
+```
+
+**Claude Desktop config (Docker)**
+
+Claude Desktop launches MCP servers as local processes. Point `command` at
+`docker` and pass the image via `args`. Use absolute paths only if you mount
+files; for the stock image the container is self-contained.
+
+| OS | Path |
+|---|---|
+| Windows | `%APPDATA%\Claude\claude_desktop_config.json` |
+| Mac | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| Linux | `~/.config/Claude/claude_desktop_config.json` |
+
+```json
+{
+  "mcpServers": {
+    "AynOps": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-e", "ABUSEIPDB_API_KEY=your-api-key-here",
+        "aynops"
+      ]
+    }
+  }
+}
+```
+
+Notes and caveats:
+
+- **stdio only** — the container must stay attached (`-i`). Do not use `-d`.
+- **Nmap is inside the image** — host Nmap is not required for the Docker path.
+- **Network scans need network access** — default Docker bridge networking is
+  enough for public internet targets. Host-network mode is optional and OS-specific.
+- **`ABUSEIPDB_API_KEY`** is only required for `ip_reputation`. Omit the `-e`
+  line if you do not use that tool.
+- Rebuild after pulling updates: `docker build -t aynops .`
+- On Windows, ensure Docker Desktop is running and `docker` is on PATH for the
+  account that launches Claude Desktop.
+
+
+---
 ## 📦 Listed On
 
 | Registry | Link |
