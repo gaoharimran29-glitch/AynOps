@@ -106,7 +106,7 @@ def test_no_dangling_cname_is_safe(mock_enum, mock_resolver_class, mock_get):
 @patch("tools.subdomain_takeover_tool.dns.resolver.Resolver")
 @patch("tools.subdomain_takeover_tool.dns_enumeration")
 def test_aggregate_counts(mock_enum, mock_resolver_class, mock_get):
-    """Mixed results: one vulnerable (status-based), one safe (live), one safe (no CNAME)."""
+    """Mixed results: one vulnerable (GitHub Pages, body-based), one safe (live), one safe (no CNAME)."""
     mock_enum.return_value = _enumeration_result(
         ["dev.example.com", "blog.example.com", "www.example.com"]
     )
@@ -130,8 +130,10 @@ def test_aggregate_counts(mock_enum, mock_resolver_class, mock_get):
     def http_side_effect(url, **kwargs):
         response = Mock()
         if "dev.example.com" in url:
-            # GitHub Pages: takeover indicator is a 404 status
-            response.status_code = 404
+            # GitHub Pages: takeover indicator is the unclaimed-site body string.
+            # status_code is intentionally 200 (not 404) to prove the match keys
+            # on the response body, not on a bare status code.
+            response.status_code = 200
             response.text = "There isn't a GitHub Pages site here."
         else:
             # Shopify CNAME but shop is live
@@ -149,6 +151,91 @@ def test_aggregate_counts(mock_enum, mock_resolver_class, mock_get):
     assert result["vulnerable"][0]["subdomain"] == "dev.example.com"
     assert result["vulnerable"][0]["service"] == "GitHub Pages"
     assert result["safe"] == ["blog.example.com", "www.example.com"]
+
+
+@patch("tools.subdomain_takeover_tool.requests.get")
+@patch("tools.subdomain_takeover_tool.dns.resolver.Resolver")
+@patch("tools.subdomain_takeover_tool.dns_enumeration")
+def test_azure_vulnerable_matches_body(mock_enum, mock_resolver_class, mock_get):
+    """Azure CNAME + Azure-specific body string => vulnerable, probed over HTTPS first."""
+    mock_enum.return_value = _enumeration_result(["app.example.com"])
+
+    resolver = Mock()
+    resolver.resolve.return_value = [_cname_record("app.azurewebsites.net.")]
+    mock_resolver_class.return_value = resolver
+
+    mock_response = Mock()
+    # A non-404 status proves the match keys on the body, not on the status code.
+    mock_response.status_code = 200
+    mock_response.text = "404 Web Site not found"
+    mock_get.return_value = mock_response
+
+    result = subdomain_takeover("example.com")
+
+    assert result["success"] is True
+    assert result["total_vulnerable"] == 1
+    assert result["vulnerable"][0]["subdomain"] == "app.example.com"
+    assert result["vulnerable"][0]["service"] == "Azure"
+    # HTTPS is attempted first and succeeded, so exactly one request is made to https://.
+    assert mock_get.call_count == 1
+    assert mock_get.call_args_list[0].args[0].startswith("https://app.example.com")
+
+
+@patch("tools.subdomain_takeover_tool.requests.get")
+@patch("tools.subdomain_takeover_tool.dns.resolver.Resolver")
+@patch("tools.subdomain_takeover_tool.dns_enumeration")
+def test_https_failure_falls_back_to_http(mock_enum, mock_resolver_class, mock_get):
+    """HTTPS connection fails => probe falls back to HTTP and still confirms takeover."""
+    import requests as real_requests
+
+    mock_enum.return_value = _enumeration_result(["app.example.com"])
+
+    resolver = Mock()
+    resolver.resolve.return_value = [_cname_record("app.azurewebsites.net.")]
+    mock_resolver_class.return_value = resolver
+
+    def http_side_effect(url, **kwargs):
+        if url.startswith("https://"):
+            raise real_requests.exceptions.ConnectionError("HTTPS unavailable")
+        response = Mock()
+        response.status_code = 404
+        response.text = "404 Web Site not found"
+        return response
+
+    mock_get.side_effect = http_side_effect
+
+    result = subdomain_takeover("example.com")
+
+    assert result["success"] is True
+    assert result["total_vulnerable"] == 1
+    assert result["vulnerable"][0]["service"] == "Azure"
+    # HTTPS tried first (and failed), then HTTP fallback succeeded.
+    assert mock_get.call_count == 2
+    assert mock_get.call_args_list[0].args[0].startswith("https://app.example.com")
+    assert mock_get.call_args_list[1].args[0].startswith("http://app.example.com")
+
+
+@patch("tools.subdomain_takeover_tool.requests.get")
+@patch("tools.subdomain_takeover_tool.dns.resolver.Resolver")
+@patch("tools.subdomain_takeover_tool.dns_enumeration")
+def test_both_schemes_fail_is_safe(mock_enum, mock_resolver_class, mock_get):
+    """Neither HTTPS nor HTTP connects => not confirmed => safe."""
+    import requests as real_requests
+
+    mock_enum.return_value = _enumeration_result(["app.example.com"])
+
+    resolver = Mock()
+    resolver.resolve.return_value = [_cname_record("app.azurewebsites.net.")]
+    mock_resolver_class.return_value = resolver
+
+    mock_get.side_effect = real_requests.exceptions.ConnectionError("unreachable")
+
+    result = subdomain_takeover("example.com")
+
+    assert result["success"] is True
+    assert result["total_vulnerable"] == 0
+    assert result["safe"] == ["app.example.com"]
+    assert mock_get.call_count == 2
 
 
 @patch("tools.subdomain_takeover_tool.dns_enumeration")

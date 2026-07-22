@@ -140,6 +140,14 @@
         "domain": "string"
       },
       "requires_api_key": false
+    },
+    {
+      "name": "subdomain_takeover",
+      "description": "Check discovered subdomains for takeover vulnerabilities — resolves CNAMEs, matches known-vulnerable service fingerprints (GitHub Pages, Heroku, S3, Azure, Ghost, Shopify, Fastly), and confirms via an HTTP probe",
+      "input": {
+        "domain": "string"
+      },
+      "requires_api_key": false
     }
   ],
   "environment_variables": [

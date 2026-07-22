@@ -15,10 +15,10 @@ from utils.helpers import is_valid_domain, normalize_domain
 # (cname_contains, service, takeover indicator)
 # indicator key "status" matches on the HTTP status code, "body" on response text.
 VULNERABLE_FINGERPRINTS = [
-    {"cname_contains": "github.io", "service": "GitHub Pages", "indicator": {"status": 404}},
+    {"cname_contains": "github.io", "service": "GitHub Pages", "indicator": {"body": "There isn't a GitHub Pages site here."}},
     {"cname_contains": "herokuapp.com", "service": "Heroku", "indicator": {"body": "No such app"}},
     {"cname_contains": "amazonaws.com", "service": "AWS S3", "indicator": {"body": "NoSuchBucket"}},
-    {"cname_contains": "azurewebsites.net", "service": "Azure", "indicator": {"status": 404}},
+    {"cname_contains": "azurewebsites.net", "service": "Azure", "indicator": {"body": "404 Web Site not found"}},
     {"cname_contains": "ghost.io", "service": "Ghost", "indicator": {"body": "404 Domain Not Found"}},
     {"cname_contains": "myshopify.com", "service": "Shopify", "indicator": {"body": "Sorry, this shop"}},
     {"cname_contains": "fastly.net", "service": "Fastly", "indicator": {"body": "Fastly error"}},
@@ -53,15 +53,29 @@ def _match_fingerprint(cname: str) -> dict | None:
     return None
 
 
+def _probe(subdomain: str):
+    """Fetch the subdomain over HTTPS first, falling back to HTTP.
+
+    Many hosted services only serve (or redirect to) HTTPS, so try that first
+    and fall back to plain HTTP only when the HTTPS connection itself fails.
+    Returns the response, or None if neither scheme connects.
+    """
+    for scheme in ("https", "http"):
+        try:
+            return requests.get(
+                f"{scheme}://{subdomain}",
+                headers=_REQUEST_HEADERS,
+                timeout=_REQUEST_TIMEOUT,
+            )
+        except requests.exceptions.RequestException:
+            continue
+    return None
+
+
 def _confirms_takeover(subdomain: str, fingerprint: dict) -> bool:
     """HTTP-probe the subdomain and check for the takeover-indicating response."""
-    try:
-        response = requests.get(
-            f"http://{subdomain}",
-            headers=_REQUEST_HEADERS,
-            timeout=_REQUEST_TIMEOUT,
-        )
-    except requests.exceptions.RequestException:
+    response = _probe(subdomain)
+    if response is None:
         return False
 
     indicator = fingerprint["indicator"]
